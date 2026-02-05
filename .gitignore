@@ -10,24 +10,5 @@ Thumbs.db
 *.swp
 *.swo
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-.Python
-venv/
-env/
-.env
-
-# Test
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Logs
-*.log
-
-# Temp
-tmp/
-temp/
-*.tmp
+# Runtime files (generated in target projects)
+.workflow-status.json

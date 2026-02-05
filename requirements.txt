@@ -1,3 +1,0 @@
-# Dev Workflow Skill Dependencies
-# No external dependencies required for core functionality
-# The skill runs within Claude Code environment
