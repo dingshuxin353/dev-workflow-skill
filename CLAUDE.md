@@ -67,9 +67,19 @@ docs/
 ### 状态流转
 ```
 planning → developing → testing → reviewing → done
-    ↑          ↓           ↓
-    └──────────┴───────────┘  (如有问题可回退)
+                ↑           │
+                │           │ (测试不通过)
+                │           ▼
+                └─────── fixing (Bug修复)
 ```
+
+**状态说明**：
+- `planning`: PM正在编写PRD和测试用例
+- `developing`: 研发正在进行新功能开发
+- `testing`: QA正在进行测试
+- `fixing`: 研发正在修复Bug（子状态，实际仍为testing）
+- `reviewing`: 测试通过，等待用户验收
+- `done`: 验收通过，已合并到main
 
 ## Skill 调用规则
 
@@ -94,20 +104,35 @@ planning → developing → testing → reviewing → done
 **触发条件**：
 - 用户说"开始开发"、"@dev"等
 - 当前状态为 `developing`
+- 或用户说"修复Bug"、"@dev 修复"等（Bug修复模式）
+
+**工作模式**：
+
+**模式一：正常开发模式**
+- 触发：`@dev` 或 `开始开发`
+- 条件：状态为 `developing`，无测试报告输入
+- 流程：根据PRD进行新功能开发
+
+**模式二：Bug修复模式**
+- 触发：`@dev 修复` 或 `修复Bug`
+- 条件：状态为 `testing`，有测试报告
+- 流程：根据测试报告中的Bug列表进行修复
+- 修复后状态保持 `testing`，等待重新测试
 
 **职责**：
-1. 读取PRD和任务清单
+1. 读取PRD和任务清单（或测试报告）
 2. 切换到develop worktree
-3. 进行代码开发
+3. 进行代码开发（或Bug修复）
 4. 编写单元测试
 5. 提交代码到develop分支
 6. 合并develop到test分支
-7. 更新状态为 `testing`
+7. 更新状态为 `testing`（或保持 `testing`）
 
 **代码规范**：
 - 遵循项目现有代码风格
 - commit message使用Conventional Commits格式
 - 每个功能点独立commit
+- Bug修复使用 `fix:` 前缀
 
 ### QA Skill (测试经理)
 **触发条件**：
@@ -175,10 +200,12 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 
 ## 快捷命令
 
-| 命令 | 说明 |
-|------|------|
-| `@pm 新需求：...` | 开始需求分析 |
-| `@dev` | 开始开发 |
-| `@qa` | 开始测试 |
-| `@status` | 查看当前状态 |
-| `验收通过` | 确认验收并发布 |
+| 命令 | 说明 | 状态要求 |
+|------|------|----------|
+| `@pm 新需求：...` | 开始需求分析 | 空/done |
+| `@dev` | 开始开发 | developing |
+| `@dev 修复` | 根据测试报告修复Bug | testing |
+| `@qa` | 开始测试 | testing |
+| `@qa 重测` | Bug修复后重新测试 | testing |
+| `@status` | 查看当前状态 | 任意 |
+| `验收通过` | 确认验收并发布 | reviewing |
