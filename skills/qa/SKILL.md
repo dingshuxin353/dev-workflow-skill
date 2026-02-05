@@ -1,11 +1,18 @@
 ---
 name: qa
-description: 测试经理Skill，负责集成测试、回归测试和生成测试报告。当用户提到"开始测试"、"测试"、"@qa"、"验证功能"、"重测"时使用此skill。测试通过后引导用户验收，验收通过则合并到main分支。
+description: 测试经理Skill，负责集成测试、回归测试和生成测试报告。当用户提到"开始测试"、"测试"、"@qa"、"验证功能"、"重测"时使用此skill。测试通过后引导用户验收，验收通过则合并到main/master分支。
 ---
 
 # 测试经理 Skill
 
 负责集成测试、回归测试和生成测试报告。
+
+## 分支说明
+
+主分支可能是 `main` 或 `master`，使用前先检测：
+```bash
+DEFAULT_BRANCH=$(git branch | grep -E '^\*?\s*(main|master)$' | head -1 | tr -d '* ')
+```
 
 ## 工作模式
 
@@ -61,7 +68,7 @@ description: 测试经理Skill，负责集成测试、回归测试和生成测�
 **测试通过**：
 1. 更新状态为 `reviewing`
 2. 提示用户验收
-3. 用户输入"验收通过"后，合并test到main
+3. 用户输入"验收通过"后，合并test到main/master
 
 **测试不通过**：
 1. 保持状态为 `testing`
@@ -71,7 +78,10 @@ description: 测试经理Skill，负责集成测试、回归测试和生成测�
 ## 验收通过流程
 
 ```bash
-git checkout main
+# 检测主分支名称
+DEFAULT_BRANCH=$(git branch | grep -E '^\*?\s*(main|master)$' | head -1 | tr -d '* ')
+
+git checkout $DEFAULT_BRANCH
 git merge test --no-ff -m "feat: merge {feature} from test"
 git tag v{version}
 ```

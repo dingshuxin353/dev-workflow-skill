@@ -7,6 +7,13 @@ description: 研发经理Skill，负责代码开发、单元测试和Bug修复�
 
 负责代码开发、单元测试编写和Bug修复。
 
+## 分支说明
+
+主分支可能是 `main` 或 `master`，使用前先检测：
+```bash
+git branch | grep -E '^\*?\s*(main|master)$' | head -1 | tr -d '* '
+```
+
 ## 工作模式
 
 ### 模式一：正常开发

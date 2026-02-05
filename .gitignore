@@ -12,6 +12,8 @@ Thumbs.db
 .workflow-status.json
 
 # Generated documents (in target projects)
+docs/roadmap.md
+docs/sprint-plan.md
 docs/prd/
 docs/test-cases/
 docs/test-reports/
