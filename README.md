@@ -33,7 +33,13 @@ cp -r skills/qa ~/.claude/skills/
 
 将 `CLAUDE.md` 复制到你的项目根目录。
 
-### 2. 初始化 Git Worktree
+### 2. 初始化文档目录
+
+```bash
+mkdir -p docs/prd docs/test-cases docs/test-reports
+```
+
+### 3. 初始化 Git Worktree
 
 ```bash
 git branch develop main 2>/dev/null || true
@@ -42,7 +48,7 @@ git worktree add ../$(basename $(pwd))-develop develop
 git worktree add ../$(basename $(pwd))-test test
 ```
 
-### 3. 开始使用
+### 4. 开始使用
 
 ```bash
 # 产品经理：分析需求
