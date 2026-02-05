@@ -13,7 +13,7 @@
 
 ## 工作流程
 
-<img width="4817" height="1429" alt="0a217c66df507c4daccc28883abbd74c" src="https://github.com/user-attachments/assets/f6b40092-fdda-4a43-ac46-4b6db237db7d" />
+<img width="4817" height="1429" alt="微信图片_20260205193827_35048_14 (1)" src="https://github.com/user-attachments/assets/72f76e5b-d247-4445-ba01-6106b0e68725" />
 
 
 ## 四个 Skill
