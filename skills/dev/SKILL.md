@@ -1,53 +1,60 @@
 ---
 name: dev
-description: 研发经理Skill，负责代码开发、单元测试和Bug修复。当用户提到"开始开发"、"研发"、"@dev"、"写代码"、"修复Bug"、"修复"时使用此skill。支持两种模式：正常开发模式和Bug修复模式。
+description: 研发经理 Skill，负责代码开发、单元测试和 Bug 修复。当用户提到"开始开发"、"研发"、"@dev"、"写代码"、"修复Bug"、"修复"时使用此 skill。适用于 Dev Workflow 的 Worktree 版。
 ---
 
-# 研发经理 Skill
+# 研发经理 Skill（Worktree 版）
 
-负责代码开发、单元测试编写和Bug修复。
+负责代码开发、单元测试和 Bug 修复。
+
+## 路径与目录约定
+
+- 工作区根目录：`<project-root>`
+- 状态文件：`<project-root>/.workflow-status.json`
+- PRD 路径来源：状态文件中的 `prd_path`
+- 开发目录：`<project-root>/app-develop`
+- 测试目录：`<project-root>/app-test`
 
 ## 分支说明
 
-主分支可能是 `main` 或 `master`，使用前先检测：
-```bash
-git branch | grep -E '^\*?\s*(main|master)$' | head -1 | tr -d '* '
-```
+- 主分支：`main` 或 `master`
+- 开发分支：`develop`
+- 测试分支：`test`
 
 ## 工作模式
 
 ### 模式一：正常开发
 
-触发：`@dev` 或 `开始开发`
+触发：`@dev`
 
-1. 读取PRD文档 (`.workflow-status.json` 中的 `prd_path`)
-2. 切换到develop worktree
-3. 按任务清单逐个开发
-4. 编写单元测试
-5. 提交代码：`git commit -m "feat: implement {feature}"`
-6. 合并到test分支
+1. 读取状态文件中的 `prd_path`
+2. 切换到 `app-develop`（develop worktree）
+3. 按任务清单开发
+4. 编写并运行单元测试
+5. 提交代码：`feat: implement {feature}`
+6. 将 develop 合并到 test（在 `app-test` 执行）
+7. 更新状态为 `testing`，提示调用 `@qa`
 
-### 模式二：Bug修复
+### 模式二：Bug 修复
 
 触发：`@dev 修复`
 
-1. 读取测试报告 (`.workflow-status.json` 中的 `test_report_path`)
-2. 切换到develop worktree
-3. 逐个修复Bug
-4. 提交修复：`git commit -m "fix: {bug-id} - {description}"`
-5. 合并到test分支
+1. 读取状态文件中的 `test_report_path`
+2. 在 `app-develop` 修复 Bug
+3. 提交修复：`fix: {bug-id} - {description}`
+4. 在 `app-test` 合并 develop
+5. 状态保持 `testing`，提示 `@qa 重测`
 
-## Git操作
+## Git 操作参考
 
 ```bash
-# 切换到develop worktree
-cd {project}-develop
-
-# 提交代码
+# develop worktree 开发
+cd <project-root>/app-develop
 git add {files}
 git commit -m "feat: implement {feature}"
 
-# 合并到test
+# test worktree 合并
+cd <project-root>/app-test
 git checkout test
 git merge develop --no-ff
 ```
@@ -55,11 +62,7 @@ git merge develop --no-ff
 ## 提交规范
 
 - `feat`: 新功能
-- `fix`: Bug修复
+- `fix`: Bug 修复
 - `docs`: 文档更新
 - `test`: 测试相关
 - `refactor`: 重构
-
-## 状态更新
-
-开发/修复完成后，保持状态为 `testing`，提示调用 `@qa` 测试。

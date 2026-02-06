@@ -8,12 +8,15 @@ Thumbs.db
 *.swp
 *.swo
 
-# Runtime files (generated in target projects)
+# Runtime files (workspace-level)
 .workflow-status.json
 
-# Generated documents (in target projects)
+# Workflow documents (workspace-level)
 docs/roadmap.md
 docs/sprint-plan.md
 docs/prd/
 docs/test-cases/
 docs/test-reports/
+
+# Local skill runtime folder in target projects
+.claude/
